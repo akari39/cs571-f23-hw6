@@ -1,11 +1,12 @@
-import React from 'react';
-import { useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { Button, Form, FormControl, FormGroup, FormLabel } from 'react-bootstrap';
 
 export default function BadgerRegister() {
     const userNameInput = useRef();
     const passwordInput = useRef();
     const confirmPasswordInput = useRef();
+
+    const [submitting, setSubmitting] = useState(false);
 
     function onRegister() {
         const username = userNameInput.current.value;
@@ -19,6 +20,7 @@ export default function BadgerRegister() {
             alert('Your passwords do not match!');
             return;
         }
+        setSubmitting(true);
         fetch("https://cs571.org/api/f23/hw6/register", {
             method: 'POST',
             headers: {
@@ -41,6 +43,8 @@ export default function BadgerRegister() {
             alert(json.msg);
         }).catch(err => {
             alert(err.message);
+        }).finally(() => {
+            setSubmitting(false);
         });
     }
 
@@ -64,6 +68,6 @@ export default function BadgerRegister() {
                 <FormControl type='password' ref={confirmPasswordInput} />
             </FormGroup>
         </Form>
-        <Button variant='primary' style={{ marginTop: '16px' }} onClick={onRegister}>Register</Button>
+        <Button variant='primary' style={{ marginTop: '16px' }} onClick={onRegister} type="submit" disabled={submitting}>Register</Button>
     </>
 }
