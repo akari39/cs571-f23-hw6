@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useContext } from 'react';
+import React, { useState, useRef, useEffect, useContext, useId } from 'react';
 import { Button, Form, FormControl, FormGroup, FormLabel } from 'react-bootstrap';
 import BadgerLoginStatusContext from '../contexts/BadgerLoginStatusContext';
 import { useNavigate } from 'react-router';
@@ -11,7 +11,7 @@ export default function BadgerRegister() {
     const confirmPasswordInput = useRef();
 
     const [submitting, setSubmitting] = useState(false);
-    
+
 
     const navigate = useNavigate();
 
@@ -62,24 +62,28 @@ export default function BadgerRegister() {
         });
     }
 
+    const usernameId = useId();
+    const passwordId = useId();
+    const confirmPasswordId = useId();
+
     return <>
         <h1>Register</h1>
         <Form>
             <FormGroup>
-                <FormLabel>
+                <FormLabel htmlFor={usernameId}>
                     Username
                 </FormLabel>
-                <FormControl ref={userNameInput} />
+                <FormControl id={usernameId} ref={userNameInput} />
                 <div style={{ height: '12px' }} />
-                <FormLabel>
+                <FormLabel htmlFor={passwordId}>
                     Password
                 </FormLabel>
-                <FormControl type='password' ref={passwordInput} />
+                <FormControl id={passwordId} type='password' ref={passwordInput} />
                 <div style={{ height: '12px' }} />
-                <FormLabel>
+                <FormLabel htmlFor={confirmPasswordId}>
                     Repeat Password
                 </FormLabel>
-                <FormControl type='password' ref={confirmPasswordInput} />
+                <FormControl id={confirmPasswordId} type='password' ref={confirmPasswordInput} />
             </FormGroup>
         </Form>
         <Button variant='primary' style={{ marginTop: '16px' }} onClick={onRegister} type="submit" disabled={submitting}>Register</Button>

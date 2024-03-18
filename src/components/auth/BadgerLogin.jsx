@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useContext } from 'react';
+import React, { useState, useRef, useEffect, useContext, useId } from 'react';
 import { Form, FormGroup, FormLabel, FormControl, Button } from 'react-bootstrap';
 import BadgerLoginStatusContext from '../contexts/BadgerLoginStatusContext';
 import { useNavigate } from 'react-router';
@@ -58,19 +58,22 @@ export default function BadgerLogin() {
         });
     }
 
+    const usernameId = useId();
+    const passwordId = useId();
+
     return <>
         <h1>Login</h1>
         <Form>
             <FormGroup>
-                <FormLabel>
+                <FormLabel htmlFor={usernameId}>
                     Username
                 </FormLabel>
-                <FormControl ref={userNameInput} />
+                <FormControl id={usernameId} ref={userNameInput} />
                 <div style={{ height: '12px' }} />
-                <FormLabel>
+                <FormLabel htmlFor={passwordId}>
                     Password
                 </FormLabel>
-                <FormControl type='password' ref={passwordInput} />
+                <FormControl id={passwordId} type='password' ref={passwordInput} />
             </FormGroup>
         </Form>
         <Button variant='primary' style={{ marginTop: '16px' }} onClick={onLogin} type="submit" disabled={submitting}>Login</Button>

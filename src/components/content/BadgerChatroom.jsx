@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useContext } from "react"
+import React, { useEffect, useRef, useState, useContext, useId } from "react"
 import { Row, Col, Pagination, Form, FormGroup, FormLabel, FormControl, Button } from "react-bootstrap";
 import BadgerLoginStatusContext from "../contexts/BadgerLoginStatusContext";
 
@@ -15,7 +15,7 @@ export default function BadgerChatroom(props) {
             }
         }).then(res => res.json()).then(json => {
             setMessages(json.messages);
-        })
+        });
     };
 
 
@@ -26,6 +26,9 @@ export default function BadgerChatroom(props) {
 
     const postTitleInput = useRef();
     const postContentInput = useRef();
+    const postTitleId = useId();
+    const postContentId = useId();
+
     const [creating, setCreating] = useState(false);
 
     const login = loginStatus !== undefined && loginStatus !== null;
@@ -101,15 +104,15 @@ export default function BadgerChatroom(props) {
                     <Col md={4}>
                         <Form>
                             <FormGroup>
-                                <FormLabel>
+                                <FormLabel htmlFor={postTitleId}>
                                     Post Title
                                 </FormLabel>
-                                <FormControl ref={postTitleInput} />
+                                <FormControl id={postTitleId} ref={postTitleInput} />
                                 <div style={{ height: '12px' }} />
-                                <FormLabel>
+                                <FormLabel htmlFor={postContentId}>
                                     Post Content
                                 </FormLabel>
-                                <FormControl ref={postContentInput} />
+                                <FormControl id={postContentId} ref={postContentInput} />
                             </FormGroup>
                         </Form>
                         <Button variant='primary' style={{ marginTop: '16px' }} onClick={createPost} type="submit" disabled={creating}>Create Post</Button>
@@ -180,5 +183,5 @@ export default function BadgerChatroom(props) {
                     </>}
             </Row>
         }
-    </>
+    </>;
 }
