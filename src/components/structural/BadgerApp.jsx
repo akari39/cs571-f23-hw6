@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import BadgerLayout from './BadgerLayout';
@@ -8,9 +8,10 @@ import BadgerLogout from '../auth/BadgerLogout';
 import BadgerChatroom from '../content/BadgerChatroom';
 import BadgerChatHome from '../content/BadgerChatHome';
 import BadgerNoMatch from '../content/BadgerNoMatch';
+import BadgerLoginStatusContext from '../contexts/BadgerLoginStatusContext';
 
 function BadgerApp() {
-
+  const [loginStatus, setLoginStatus] = useContext(BadgerLoginStatusContext);
   const [chatrooms, setChatrooms] = useState([]);
 
   useEffect(() => {

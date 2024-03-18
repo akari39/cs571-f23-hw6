@@ -1,12 +1,26 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { Button, Form, FormControl, FormGroup, FormLabel } from 'react-bootstrap';
+import BadgerLoginStatusContext from '../contexts/BadgerLoginStatusContext';
+import { useNavigate } from 'react-router';
 
 export default function BadgerRegister() {
+    const [loginStatus, setLoginStatus] = useContext(BadgerLoginStatusContext);
+
     const userNameInput = useRef();
     const passwordInput = useRef();
     const confirmPasswordInput = useRef();
 
     const [submitting, setSubmitting] = useState(false);
+    
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (loginStatus !== undefined && loginStatus !== null) {
+            console.log(loginStatus);
+            navigate("/");
+        }
+    }, [loginStatus]);
 
     function onRegister() {
         const username = userNameInput.current.value;

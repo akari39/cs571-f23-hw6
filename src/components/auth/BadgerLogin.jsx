@@ -1,6 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { Form, FormGroup, FormLabel, FormControl, Button } from 'react-bootstrap';
 import BadgerLoginStatusContext from '../contexts/BadgerLoginStatusContext';
+import { useNavigate } from 'react-router';
 
 export default function BadgerLogin() {
     const [loginStatus, setLoginStatus] = useContext(BadgerLoginStatusContext);
@@ -8,6 +9,15 @@ export default function BadgerLogin() {
     const passwordInput = useRef();
 
     const [submitting, setSubmitting] = useState(false);
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (loginStatus !== undefined && loginStatus !== null) {
+            console.log(loginStatus);
+            navigate("/");
+        }
+    }, [loginStatus]);
 
     function onLogin() {
         const username = userNameInput.current.value;
@@ -37,6 +47,10 @@ export default function BadgerLogin() {
             }
         }).then(json => {
             alert(json.msg);
+            const userInfo = json.user;
+            setLoginStatus(userInfo);
+            sessionStorage.setItem("userInfo", JSON.stringify(userInfo));
+            navigate("/");
         }).catch(err => {
             alert(err.message);
         }).finally(() => {

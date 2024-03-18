@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Nav, Navbar, NavDropdown, NavLink } from "react-bootstrap";
 import { Link, Outlet } from "react-router-dom";
 
@@ -12,6 +12,14 @@ function BadgerLayout(props) {
     // user in sessionStorage first. If so, that should
     // be your initial loginStatus state.
     const [loginStatus, setLoginStatus] = useState(undefined)
+
+    useEffect(() => {
+        const userInfoJson = sessionStorage.getItem("userInfo");
+        if (userInfoJson !== null) {
+            const userInfo = JSON.parse(userInfoJson);
+            setLoginStatus(userInfo);
+        }
+    }, []);
 
     return (
         <div>
@@ -29,8 +37,12 @@ function BadgerLayout(props) {
                     </Navbar.Brand>
                     <Nav className="me-auto">
                         <Nav.Link as={Link} to="/">Home</Nav.Link>
-                        <Nav.Link as={Link} to="login">Login</Nav.Link>
-                        <Nav.Link as={Link} to="register">Register</Nav.Link>
+                        {
+                            loginStatus == undefined && loginStatus == null ? <>
+                                <Nav.Link as={Link} to="login">Login</Nav.Link>
+                                <Nav.Link as={Link} to="register">Register</Nav.Link>
+                            </> : <Nav.Link as={Link} to="logout">Logout</Nav.Link>
+                        }
                         <NavDropdown title="Chatrooms">
                             {
                                 props.chatrooms.map((chatroom) => {
